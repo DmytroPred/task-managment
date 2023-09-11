@@ -1,2 +1,11 @@
-<app-return-button></app-return-button>
-<p>edit-task works!</p>
+<div class="buttons">
+    <app-return-button></app-return-button>
+    <button mat-fab color="warn" aria-label="Delete task" (click)="openWarningDialog()">
+        <mat-icon>delete</mat-icon>
+    </button>
+    <!-- <button mat-button color="warn">Delete task</button> -->
+</div>
+
+<div *ngIf="task">
+    <p>edit-task works!</p>
+</div>

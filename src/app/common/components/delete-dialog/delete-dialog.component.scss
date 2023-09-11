@@ -1,0 +1,16 @@
+.dialog {
+    padding: 48px 48px 24px;
+
+    &__header {
+        font-size: 32px;
+        font-weight: 700;
+        margin: 0;
+        padding: 32px;
+    }
+
+    &__buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+    }
+}

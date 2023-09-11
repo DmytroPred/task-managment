@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { CreateUserComponent } from './create-user/create-user.component';
 import { CreateTaskComponent } from './create-task/create-task.component';
@@ -18,6 +19,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EditTaskComponent } from './edit-task/edit-task.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
+import { DeleteDialogComponent } from './common/components/delete-dialog/delete-dialog.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +29,8 @@ import { EditUserComponent } from './edit-user/edit-user.component';
     CreateTaskComponent,
     ReturnButtonComponent,
     EditTaskComponent,
-    EditUserComponent
+    EditUserComponent,
+    DeleteDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -41,6 +44,7 @@ import { EditUserComponent } from './edit-user/edit-user.component';
     MatFormFieldModule,
     MatSelectModule,
     MatSnackBarModule,
+    MatDialogModule,
   ],
   providers: [
     {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}}

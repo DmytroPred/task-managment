@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
-import { first } from 'rxjs';
+import { first, Subscription } from 'rxjs';
 import { Task } from '../common/models/task.interface';
+import { User } from '../common/models/user.interface';
 import { TaskService } from '../common/services/task.service';
 import { UserService } from '../common/services/user.service';
 
@@ -10,14 +11,23 @@ import { UserService } from '../common/services/user.service';
   templateUrl: './create-task.component.html',
   styleUrls: ['./create-task.component.scss']
 })
-export class CreateTaskComponent {
+export class CreateTaskComponent implements OnInit, OnDestroy {
+  users?: User[];
   taskForm = new FormGroup({
     name: new FormControl('', Validators.required),
     description: new FormControl('', Validators.required),
-    selectedUser: new FormControl(''),
+    selectedUser: new FormControl({name: '', id: ''}),
   });
 
-  constructor(private taskService: TaskService, public userService: UserService) { }
+  subscription?: Subscription;
+
+  constructor(private taskService: TaskService, private userService: UserService) { }
+
+  ngOnInit(): void {
+    this.subscription = this.userService.users$.subscribe(users => {
+      this.users = users.filter(user => !user.isAssigned);
+    });   
+  }
 
   submitTask(formDirective: FormGroupDirective) {
     const date = new Date();
@@ -30,7 +40,16 @@ export class CreateTaskComponent {
         description: formValue.description,
         creationDate: date,
         modificationDate: date,
-        state: 'in queue',
+        state: formValue.selectedUser?.id ? 'in progress' : 'in queue',
+
+        assignedUser: {
+          name: formValue.selectedUser?.name ?? '',
+          id: formValue.selectedUser?.id ?? '',
+        }      
+      }
+
+      if(formValue.selectedUser?.id) {
+        this.userService.assignUser(formValue.selectedUser, task);
       }
 
       this.updateTasksSubject(task, formDirective);
@@ -46,5 +65,9 @@ export class CreateTaskComponent {
       this.taskForm.reset();
       formDirective.resetForm();
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();    
   }
 }

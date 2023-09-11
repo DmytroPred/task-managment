@@ -1,3 +1,5 @@
+import { User } from "./user.interface";
+
 export interface Task {
   id: string;
   name: string;
@@ -6,6 +8,5 @@ export interface Task {
   modificationDate: Date;
   state: 'in queue' | 'in progress' | 'done';
 
-  userName?: string;
-  userId?: string;
+  assignedUser?: User;
 }

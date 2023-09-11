@@ -11,10 +11,7 @@ export class TaskService {
   constructor() { 
     this.initData();
 
-    this.tasks$.subscribe(tasks => {
-      console.log(tasks);
-      this.updateLocalStorage(tasks);
-    })
+    this.tasks$.subscribe(tasks => this.updateLocalStorage(tasks));
   }
 
   initData() {
@@ -25,8 +22,6 @@ export class TaskService {
     } else {
       localStorage.setItem('tasks', JSON.stringify([]));
     }
-
-    console.log(JSON.parse(tasks ?? ''));
   }
 
   updateLocalStorage(tasks: Task[]) {

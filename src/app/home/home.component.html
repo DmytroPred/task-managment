@@ -6,7 +6,7 @@
             <button mat-raised-button color="primary" routerLink="create-task">Create task</button>
         </div>
 
-        <button mat-raised-button color="primary" (click)="toggleLists()">Show {{ isTaskShowed ? 'user' : 'task' }} list</button>
+        <button mat-raised-button color="primary" (click)="toggleLists()">{{ isTaskShowed ? 'Task' : 'User' }} list</button>
     </div>
 
     <div class="home__lists">
@@ -26,7 +26,7 @@
             <tbody>
                 <tr *ngFor="let task of (taskService.tasks$ | async)" routerLink="task/{{task.id}}">
                     <td>{{ task.name }}</td>
-                    <td>{{ task.userName ?? '-' }}</td>
+                    <td>{{ task.assignedUser?.name ?? '-' }}</td>
                     <td>{{ task.creationDate | date:' HH:mm - dd/MM/yy' }}</td>
                     <td>{{ task.modificationDate | date:'HH:mm - dd/MM/yy' }}</td>
                     <td>{{ task.state }}</td>

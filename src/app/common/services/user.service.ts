@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, first } from 'rxjs';
+import { Task } from '../models/task.interface';
 import { User } from '../models/user.interface';
 
 @Injectable({
@@ -11,10 +12,7 @@ export class UserService {
   constructor() {
     this.initData();
 
-    // console.log('service');
-    // console.log(JSON.parse(users ?? ''));
     this.users$.subscribe(users => {
-      console.log(users);
       this.updateLocalStorage(users);
     })
   }
@@ -27,14 +25,23 @@ export class UserService {
     } else {
       localStorage.setItem('users', JSON.stringify([]));
     }
-
-    console.log(JSON.parse(users ?? ''));
   }
 
   updateLocalStorage(users: User[]) {
     localStorage.setItem('users', JSON.stringify(users));
-    // this.users$.subscribe(users => {
-    //   console.log(users);
-    // })
   }
+
+  assignUser(user: User, task: Task) {
+    this.users$.pipe(first()).subscribe(users => {
+      users.map(item => {
+        if(item.id === user.id) {
+          item.isAssigned = true;
+          item.assignedTask = task;
+        }
+      });
+
+      this.users$.next(users);
+    });
+
+  } 
 }

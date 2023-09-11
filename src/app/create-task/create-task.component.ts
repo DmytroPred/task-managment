@@ -14,7 +14,7 @@ export class CreateTaskComponent {
   taskForm = new FormGroup({
     name: new FormControl('', Validators.required),
     description: new FormControl('', Validators.required),
-    selectedUSer: new FormControl(''),
+    selectedUser: new FormControl(''),
   });
 
   constructor(private taskService: TaskService, public userService: UserService) { }

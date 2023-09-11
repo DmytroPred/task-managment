@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { TaskService } from '../common/services/task.service';
 import { UserService } from '../common/services/user.service';
 import { TASK_HEADERS } from './data/home.data';
@@ -8,12 +8,13 @@ import { TASK_HEADERS } from './data/home.data';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
   headers: string[] = TASK_HEADERS;
-  // constructor(private taskService: TaskService, private userService: UserService) {}
+  isTaskShowed = true;
+
   constructor(public taskService: TaskService, public userService: UserService) {}
 
-  ngOnInit(): void {
-    
+  toggleLists() {
+    this.isTaskShowed = !this.isTaskShowed;
   }
 }

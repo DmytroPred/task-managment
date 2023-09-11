@@ -13,9 +13,9 @@
             <textarea matInput placeholder="Fill task description" formControlName="description"></textarea>
         </mat-form-field> 
 
-        <mat-form-field appearance="outline">
-            <mat-label>Assign user</mat-label>
-            <mat-select>
+        <mat-form-field appearance="outline" *ngIf="(userService.users$ | async)?.length">
+            <mat-label>Assign user (optional)</mat-label>
+            <mat-select formControlName="selectedUser">
                 <mat-option *ngFor="let user of userService.users$ | async" [value]="user.name">
                   {{user.name}}
                 </mat-option>

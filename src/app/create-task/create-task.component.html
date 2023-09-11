@@ -1,0 +1,27 @@
+<app-return-button></app-return-button>
+<div class="task">
+    <h4>Task creation</h4>
+    <form class="task__form" (ngSubmit)="submitTask(formDirective)" [formGroup]="taskForm" #formDirective="ngForm">
+        <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput placeholder="Fill task name" formControlName="name">
+        </mat-form-field> 
+
+
+        <mat-form-field appearance="outline">
+            <mat-label>Description</mat-label>
+            <textarea matInput placeholder="Fill task description" formControlName="description"></textarea>
+        </mat-form-field> 
+
+        <mat-form-field appearance="outline">
+            <mat-label>Assign user</mat-label>
+            <mat-select>
+                <mat-option *ngFor="let user of userService.users$ | async" [value]="user.name">
+                  {{user.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field> 
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="!taskForm.valid">Submit</button>
+    </form>
+</div>

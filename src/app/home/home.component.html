@@ -1,0 +1,33 @@
+
+<div class="home">
+    <div class="home__navigation">
+        <button mat-raised-button color="primary" routerLink="create-user">Create user</button>
+        <button mat-raised-button color="primary" routerLink="create-task">Create task</button>
+    </div>
+
+    <div class="home__lists">
+        <div class="home__users">
+            <div *ngFor="let user of (userService.users$ | async)">
+                {{user.name}}
+            </div>
+        </div>
+
+        <table class="home__tasks">
+            <thead>
+                <tr>
+                    <th *ngFor="let header of headers">{{ header }}</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let task of (taskService.tasks$ | async)" routerLink="task/{{task.id}}">
+                    <td>{{ task.name }}</td>
+                    <td>{{ task.userName }}</td>
+                    <td>{{ task.creationDate | date:' HH:mm - dd/MM/yy' }}</td>
+                    <td>{{ task.modificationDate | date:'HH:mm - dd/MM/yy' }}</td>
+                    <td>{{ task.state }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

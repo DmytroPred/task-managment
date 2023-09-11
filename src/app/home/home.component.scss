@@ -1,0 +1,39 @@
+$border-radius: 16px;
+
+.home {
+    &__navigation {
+        :first-child {
+            margin-right: 12px;
+        }
+    }
+
+    &__tasks {
+        border-collapse: collapse;
+        // border-spacing: 0;
+        width: 100%;
+
+        th {
+            padding: 12px;
+            text-align: start;
+
+            &:first-child {
+                border-top-left-radius: $border-radius;
+            }
+
+            &:last-child {
+                border-top-right-radius: $border-radius;
+            }
+        }
+
+        tbody {
+            td {
+                padding: 24px 12px;
+            }
+
+            tr {
+                cursor: pointer;
+                border-bottom: 2px solid whitesmoke;
+            }
+        }
+    }
+}

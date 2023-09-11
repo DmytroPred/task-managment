@@ -1,0 +1,1 @@
+export const TASK_HEADERS = ['Name', 'Assignet user', 'Create date', 'Modification date', 'Task state'];

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { first } from 'rxjs';
 import { User } from '../common/models/user.interface';
+import { SnackbarService } from '../common/services/snackbar.service';
 import { UserService } from '../common/services/user.service';
 
 @Component({
@@ -14,7 +15,7 @@ export class CreateUserComponent {
     name: new FormControl('', Validators.required),
   });
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private snackbarService: SnackbarService) {}
 
   submitUser(formDirective: FormGroupDirective) {
     const date = new Date();
@@ -27,6 +28,7 @@ export class CreateUserComponent {
       }
 
       this.updateUsersSubject(user, formDirective);
+      this.snackbarService.openSnackBar('User successfully created!', 'Close');
     }
   }
 

@@ -3,6 +3,7 @@ import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular
 import { first, Subscription } from 'rxjs';
 import { Task } from '../common/models/task.interface';
 import { User } from '../common/models/user.interface';
+import { SnackbarService } from '../common/services/snackbar.service';
 import { TaskService } from '../common/services/task.service';
 import { UserService } from '../common/services/user.service';
 
@@ -21,7 +22,11 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
 
   subscription?: Subscription;
 
-  constructor(private taskService: TaskService, private userService: UserService) { }
+  constructor(
+    private taskService: TaskService, 
+    private userService: UserService,
+    private snackbarService: SnackbarService,
+  ) { }
 
   ngOnInit(): void {
     this.subscription = this.userService.users$.subscribe(users => {
@@ -53,6 +58,7 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
       }
 
       this.updateTasksSubject(task, formDirective);
+      this.snackbarService.openSnackBar('Task created!', 'Close');
     }
   }
 

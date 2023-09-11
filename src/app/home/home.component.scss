@@ -1,4 +1,5 @@
-$border-radius: 16px;
+$padding-y: 24px;
+$padding-x: 12px;
 
 .home {
     &__buttons {
@@ -14,31 +15,44 @@ $border-radius: 16px;
         }
     }
 
+    &__users {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    &__user {
+        cursor: pointer;
+        display: flex;
+        justify-content: space-between;
+
+        padding: $padding-y $padding-x;
+        &:hover {
+            background-color: whitesmoke;
+        }
+    }
+
     &__tasks {
         border-collapse: collapse;
         width: 100%;
 
         th {
-            padding: 12px;
+            padding: $padding-x;
             text-align: start;
-
-            &:first-child {
-                border-top-left-radius: $border-radius;
-            }
-
-            &:last-child {
-                border-top-right-radius: $border-radius;
-            }
         }
 
         tbody {
             td {
-                padding: 24px 12px;
+                padding: $padding-y $padding-x;
             }
 
             tr {
                 cursor: pointer;
                 border-bottom: 2px solid whitesmoke;
+
+                &:hover {
+                    background-color: whitesmoke;
+                }
             }
         }
     }

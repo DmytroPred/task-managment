@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { CreateTaskComponent } from './create-task/create-task.component';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { EditTaskComponent } from './edit-task/edit-task.component';
+import { EditUserComponent } from './edit-user/edit-user.component';
 import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
@@ -16,7 +17,10 @@ const routes: Routes = [
     path: 'create-user', component: CreateUserComponent,
   },
   {
-    path: 'task/:id', component: EditTaskComponent,
+    path: 'edit-task/:id', component: EditTaskComponent,
+  },
+  {
+    path: 'edit-user/:id', component: EditUserComponent,
   }
 ];
 

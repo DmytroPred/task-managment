@@ -9,6 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 
 import { CreateUserComponent } from './create-user/create-user.component';
 import { CreateTaskComponent } from './create-task/create-task.component';
@@ -16,6 +17,7 @@ import { ReturnButtonComponent } from './common/components/return-button/return-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EditTaskComponent } from './edit-task/edit-task.component';
+import { EditUserComponent } from './edit-user/edit-user.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,8 @@ import { EditTaskComponent } from './edit-task/edit-task.component';
     CreateUserComponent,
     CreateTaskComponent,
     ReturnButtonComponent,
-    EditTaskComponent
+    EditTaskComponent,
+    EditUserComponent
   ],
   imports: [
     BrowserModule,
@@ -37,8 +40,11 @@ import { EditTaskComponent } from './edit-task/edit-task.component';
     MatInputModule,
     MatFormFieldModule,
     MatSelectModule,
+    MatSnackBarModule,
   ],
-  providers: [],
+  providers: [
+    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {duration: 2500}}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

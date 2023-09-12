@@ -1,3 +1,4 @@
+import { State } from "./state.type";
 import { User } from "./user.interface";
 
 export interface Task {
@@ -6,7 +7,7 @@ export interface Task {
   description: string;
   creationDate: Date;
   modificationDate: Date;
-  state: 'in queue' | 'in progress' | 'done';
+  state: State;
 
   assignedUser?: User;
 }

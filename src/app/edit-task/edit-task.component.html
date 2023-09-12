@@ -3,9 +3,38 @@
     <button mat-fab color="warn" aria-label="Delete task" (click)="openWarningDialog()">
         <mat-icon>delete</mat-icon>
     </button>
-    <!-- <button mat-button color="warn">Delete task</button> -->
 </div>
+<div class="task default-form">
+    <h4>Edit task</h4>
+    <form *ngIf="taskForm" class="task__form" (ngSubmit)="submitTask()" [formGroup]="taskForm">
+        <mat-form-field appearance="outline">
+            <mat-label>Name</mat-label>
+            <input matInput placeholder="Fill task name" formControlName="name">
+        </mat-form-field> 
+    
+        <mat-form-field appearance="outline">
+            <mat-label>Description</mat-label>
+            <textarea matInput placeholder="Fill task description" formControlName="description"></textarea>
+        </mat-form-field> 
+    
+        <mat-form-field appearance="outline">
+            <mat-label>Assign user (optional)</mat-label>
+            <mat-select formControlName="selectedUser">
+                <mat-option *ngFor="let user of users" [value]="user.id">
+                  {{user.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
 
-<div *ngIf="task">
-    <p>edit-task works!</p>
+        <mat-form-field appearance="outline">
+            <mat-label>Change state (optional)</mat-label>
+            <mat-select formControlName="state">
+                <mat-option *ngFor="let state of states" [value]="state" [disabled]="!taskForm.value.selectedUser">
+                  {{state}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field> 
+    
+        <button mat-raised-button color="primary" type="submit" [disabled]="!taskForm.valid">Save</button>
+    </form>
 </div>

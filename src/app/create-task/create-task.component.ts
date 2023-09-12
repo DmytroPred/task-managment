@@ -67,13 +67,12 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
       tasks.push(task);
       this.taskService.tasks$.next(tasks);
 
-
       this.taskForm.reset();
       formDirective.resetForm();
     });
   }
 
   ngOnDestroy(): void {
-    this.subscription?.unsubscribe();    
+    this.subscription?.unsubscribe();
   }
 }

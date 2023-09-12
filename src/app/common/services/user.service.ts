@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, first } from 'rxjs';
+import { getCircularReplacer } from '../components/functions/get-circular-replacer';
 import { Task } from '../models/task.interface';
 import { User } from '../models/user.interface';
 
@@ -11,10 +12,7 @@ export class UserService {
 
   constructor() {
     this.initData();
-
-    this.users$.subscribe(users => {
-      this.updateLocalStorage(users);
-    })
+    this.users$.subscribe(users => this.updateLocalStorage(users));
   }
 
   initData() {
@@ -25,10 +23,6 @@ export class UserService {
     } else {
       localStorage.setItem('users', JSON.stringify([]));
     }
-  }
-
-  updateLocalStorage(users: User[]) {
-    localStorage.setItem('users', JSON.stringify(users));
   }
 
   assignUser(user: User, task: Task) {
@@ -42,6 +36,22 @@ export class UserService {
 
       this.users$.next(users);
     });
+  }
 
-  } 
+  unassignUser(assignedUser: User) {
+    this.users$.pipe(first()).subscribe(users => {
+      users.map(item => {
+        if(item.id === assignedUser.id) {
+          item.isAssigned = false;
+          delete item.assignedTask;
+        }
+      });
+
+      this.users$.next(users);
+    });
+  }
+
+  updateLocalStorage(users: User[]) {
+    localStorage.setItem('users', JSON.stringify(users, getCircularReplacer()));
+  }
 }

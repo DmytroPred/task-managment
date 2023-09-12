@@ -1,0 +1,1 @@
+export type State = 'in queue' | 'in progress' | 'done';

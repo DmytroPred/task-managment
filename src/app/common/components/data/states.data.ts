@@ -1,0 +1,1 @@
+export const STATES = ['in queue', 'in progress', 'done'];

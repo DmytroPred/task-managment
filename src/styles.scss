@@ -13,3 +13,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
         flex-direction: column;
     }
 }
+
+.task, .user {
+    &__form {
+        display: flex;
+        flex-direction: column;
+    }
+}

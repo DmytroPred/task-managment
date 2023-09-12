@@ -92,24 +92,16 @@ export class EditTaskComponent implements OnInit {
         this.userService.assignUser(task.assignedUser, task);
       }
 
-      this.updateTasksSubject(task);
+      this.taskService.updateTaskSubject(task);
       this.snackbarService.openSnackBar('Task updated!', 'Close');
     }
-  }
-
-  updateTasksSubject(task: Task) {
-    this.taskService.tasks$.pipe(first()).subscribe(tasks => {
-      const index = tasks.findIndex(item => item.id === task.id);
-      tasks[index] = task;
-      this.taskService.tasks$.next(tasks);
-    });
   }
 
   updateTaskFormValues(): void {
     this.taskForm.setValue({
       name: this.task?.name,
       description: this.task?.description,
-      selectedUser: this.task?.assignedUser?.id,
+      selectedUser: this.task?.assignedUser?.id ?? '',
       state: this.task?.state,
     });
   }

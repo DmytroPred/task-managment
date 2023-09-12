@@ -51,6 +51,24 @@ export class UserService {
     });
   }
 
+  deleteUser(user: User) {
+    this.users$.pipe(first()).subscribe(users => {
+      const index = users.findIndex(item => item.id === user.id);
+      users.splice(index, 1);
+
+      this.users$.next(users);
+    });
+  }
+
+  updateUserSubject(user: User) {
+    this.users$.pipe(first()).subscribe(users => {
+      const index = users.findIndex(item => item.id === user.id);
+      users[index] = user;
+
+      this.users$.next(users);
+    });
+  }
+
   updateLocalStorage(users: User[]) {
     localStorage.setItem('users', JSON.stringify(users, getCircularReplacer()));
   }

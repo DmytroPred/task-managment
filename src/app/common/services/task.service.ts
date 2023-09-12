@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, first } from 'rxjs';
 import { getCircularReplacer } from '../components/functions/get-circular-replacer';
 import { Task } from '../models/task.interface';
-import { User } from '../models/user.interface';
 import { UserService } from './user.service';
 
 @Injectable({
@@ -40,6 +39,27 @@ export class TaskService {
       if(deletedTask.assignedUser?.id) {
         this.userService.unassignUser(deletedTask.assignedUser);
       }
+    });
+  }
+
+  unassignTask(taskId: string) {
+    this.tasks$.pipe(first()).subscribe(tasks => {
+      tasks.forEach(task => {
+        if(taskId === task.id) {
+          delete task.assignedUser;
+          task.state = 'in queue';
+        }
+
+        this.tasks$.next(tasks);
+      });
+    })
+  }
+
+  updateTaskSubject(task: Task) {
+    this.tasks$.pipe(first()).subscribe(tasks => {
+      const index = tasks.findIndex(item => item.id === task.id);
+      tasks[index] = task;
+      this.tasks$.next(tasks);
     });
   }
 

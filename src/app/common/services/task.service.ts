@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, first } from 'rxjs';
 import { getCircularReplacer } from '../components/functions/get-circular-replacer';
 import { Task } from '../models/task.interface';
+import { User } from '../models/user.interface';
 import { UserService } from './user.service';
 
 @Injectable({
@@ -26,19 +27,27 @@ export class TaskService {
     }
   }
 
-  deleteTask(taskId: string) {
-    if(!taskId) return;
-    let deletedTask: Task; 
-
+  createTask(task: Task) {
     this.tasks$.pipe(first()).subscribe(tasks => {
-      const index = tasks.findIndex(task => taskId === task.id);
-      deletedTask = tasks.splice(index, 1)[0];
+      tasks.unshift(task);
+      this.tasks$.next(tasks);
+    });
+  }
+
+  updateTask(task: Task) {
+    this.tasks$.pipe(first()).subscribe(tasks => {
+      const index = tasks.findIndex(item => item.id === task.id);
+      tasks[index] = task;
+      this.tasks$.next(tasks);
+    });
+  }
+
+  updateAssignedUser(taskId: string, user: User) {
+    this.tasks$.pipe(first()).subscribe(tasks => {
+      const index = tasks.findIndex(item => item.id === taskId);
+      tasks[index].assignedUser = user;
 
       this.tasks$.next(tasks);
-
-      if(deletedTask.assignedUser?.id) {
-        this.userService.unassignUser(deletedTask.assignedUser);
-      }
     });
   }
 
@@ -55,11 +64,19 @@ export class TaskService {
     })
   }
 
-  updateTaskSubject(task: Task) {
+  deleteTask(taskId: string) {
+    if(!taskId) return;
+    let deletedTask: Task; 
+
     this.tasks$.pipe(first()).subscribe(tasks => {
-      const index = tasks.findIndex(item => item.id === task.id);
-      tasks[index] = task;
+      const index = tasks.findIndex(task => taskId === task.id);
+      deletedTask = tasks.splice(index, 1)[0];
+
       this.tasks$.next(tasks);
+
+      if(deletedTask.assignedUser?.id) {
+        this.userService.unassignUser(deletedTask.assignedUser);
+      }
     });
   }
 

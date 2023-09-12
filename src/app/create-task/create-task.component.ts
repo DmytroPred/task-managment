@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
-import { first, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Task } from '../common/models/task.interface';
 import { User } from '../common/models/user.interface';
 import { SnackbarService } from '../common/services/snackbar.service';
@@ -57,19 +57,15 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
         this.userService.assignUser(formValue.selectedUser, task);
       }
 
-      this.updateTasksSubject(task, formDirective);
+      this.createTask(task, formDirective);
       this.snackbarService.openSnackBar('Task created!', 'Close');
     }
   }
 
-  updateTasksSubject(task: Task, formDirective: FormGroupDirective) {
-    this.taskService.tasks$.pipe(first()).subscribe(tasks => {
-      tasks.push(task);
-      this.taskService.tasks$.next(tasks);
-
-      this.taskForm.reset();
-      formDirective.resetForm();
-    });
+  createTask(task: Task, formDirective: FormGroupDirective) {
+    this.taskService.createTask(task);
+    this.taskForm.reset();
+    formDirective.resetForm();
   }
 
   ngOnDestroy(): void {

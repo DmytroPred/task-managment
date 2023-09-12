@@ -25,6 +25,22 @@ export class UserService {
     }
   }
 
+  createUser(user: User) {
+    this.users$.pipe(first()).subscribe(users => {
+      users.unshift(user);
+      this.users$.next(users);
+    });
+  }
+
+  updateUser(user: User) {
+    this.users$.pipe(first()).subscribe(users => {
+      const index = users.findIndex(item => item.id === user.id);
+      users[index] = user;
+
+      this.users$.next(users);
+    });
+  }
+
   assignUser(user: User, task: Task) {
     this.users$.pipe(first()).subscribe(users => {
       users.map(item => {
@@ -55,15 +71,6 @@ export class UserService {
     this.users$.pipe(first()).subscribe(users => {
       const index = users.findIndex(item => item.id === user.id);
       users.splice(index, 1);
-
-      this.users$.next(users);
-    });
-  }
-
-  updateUserSubject(user: User) {
-    this.users$.pipe(first()).subscribe(users => {
-      const index = users.findIndex(item => item.id === user.id);
-      users[index] = user;
 
       this.users$.next(users);
     });

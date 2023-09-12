@@ -62,22 +62,30 @@ export class EditUserComponent implements OnInit {
     this.router.navigateByUrl('');
   }
 
-  submitUser() {
-    const date = new Date();
+  submitUser(): void {
     const formValue = this.userForm.value;
 
     if(formValue.name) {
       const user: User = {
         id: this.user?.id ?? '',
         name: formValue.name,
+        assignedTask: this.user?.assignedTask
       }
 
-      this.userService.updateUserSubject(user);
+      this.updateUser(user);
       this.snackbarService.openSnackBar('User successfully updated!', 'Close');
     }
   }
 
-  initForm() {
+  updateUser(user: User) {
+    this.userService.updateUser(user);
+    
+    if(this.user?.assignedTask?.id) {
+      this.taskService.updateAssignedUser(this.user?.assignedTask?.id, user);
+    }
+  }
+
+  initForm(): void {
     this.userForm.patchValue({
       name: this.user?.name,
     })

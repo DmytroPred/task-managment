@@ -71,6 +71,7 @@ export class EditTaskComponent implements OnInit {
   submitTask() {
     const date = new Date();
     const formValue = this.taskForm?.value;
+    const assignedUser = this.users?.find(user => user.id === formValue.selectedUser);
 
     if(formValue.name && formValue.description) {
       const task: Task = {
@@ -80,7 +81,7 @@ export class EditTaskComponent implements OnInit {
         creationDate: this.task?.creationDate as Date,
         modificationDate: date,
         state: formValue.state,
-        assignedUser: this.users?.find(user => user.id === formValue.selectedUser),
+        assignedUser: assignedUser,
       }
 
       if(this.task?.assignedUser && this.task?.assignedUser?.id !== formValue.selectedUser) {
@@ -92,7 +93,7 @@ export class EditTaskComponent implements OnInit {
         this.userService.assignUser(task.assignedUser, task);
       }
 
-      this.taskService.updateTaskSubject(task);
+      this.taskService.updateTask(task);
       this.snackbarService.openSnackBar('Task updated!', 'Close');
     }
   }

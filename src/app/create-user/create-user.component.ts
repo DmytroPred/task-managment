@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
-import { first } from 'rxjs';
 import { User } from '../common/models/user.interface';
 import { SnackbarService } from '../common/services/snackbar.service';
 import { UserService } from '../common/services/user.service';
@@ -27,19 +26,14 @@ export class CreateUserComponent {
         name: formValue.name,
       }
 
-      this.updateUsersSubject(user, formDirective);
+      this.createUser(user, formDirective);
       this.snackbarService.openSnackBar('User successfully created!', 'Close');
     }
   }
 
-  updateUsersSubject(user: User, formDirective: FormGroupDirective) {
-    this.userService.users$.pipe(first()).subscribe(users => {
-      users.push(user);
-      this.userService.users$.next(users);
-
-
-      this.userForm.reset();
-      formDirective.resetForm();
-    });
+  createUser(user: User, formDirective: FormGroupDirective) {
+    this.userService.createUser(user);
+    this.userForm.reset();
+    formDirective.resetForm();
   }
 }

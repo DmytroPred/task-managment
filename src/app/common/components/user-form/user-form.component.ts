@@ -23,32 +23,34 @@ export class UserFormComponent implements OnInit {
   }
 
   submitForm(formDirective: FormGroupDirective): void {
-    const formValue = this.userForm.value;
-
-    if(!formValue.name) return;
-  
-    let user: User;
-
-    if(this.isAddMode) {
-      const date = new Date();
-
-      user = {
-        id: date.getTime().toString(),
-        name: formValue.name,
-      }
-    } else {
-      user = {
-        id: this.user?.id ?? '',
-        name: formValue.name,
-        assignedTask: this.user?.assignedTask
-      }
+    if(this.userForm.invalid) {
+      return;
     }
+  
+    const user = this.getUser();
 
     this.userChangeEvent.emit(user);
 
     if(this.isAddMode) {
       this.userForm.reset();
       formDirective.resetForm();
+    }
+  }
+
+  getUser(): User {
+    const formValue = this.userForm.value;
+
+    if(this.isAddMode) {
+      return {
+        id: Date.now().toString(),
+        name: formValue.name as string,
+      }
+    } else {
+      return {
+        id: this.user?.id ?? '',
+        name: formValue.name as string,
+        assignedTask: this.user?.assignedTask
+      }
     }
   }
 

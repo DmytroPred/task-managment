@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { User } from '../../models/user.interface';
+import { getUnixTime } from '../../utilities/get-unix-time';
 
 @Component({
   selector: 'app-user-form',
@@ -36,7 +37,7 @@ export class UserFormComponent implements OnInit {
   }
 
   getUser(): User {
-    const id = this.user?.id || Date.now().toString();
+    const id = this.user?.id || getUnixTime();
     const name = this.userForm.value.name as string;
     const assignedTask = this.user?.assignedTask || null;
 

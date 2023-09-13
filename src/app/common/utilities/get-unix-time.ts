@@ -1,0 +1,1 @@
+export const getUnixTime = () => Date.now().toString();

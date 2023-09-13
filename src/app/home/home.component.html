@@ -18,26 +18,32 @@
                     <mat-icon>edit</mat-icon>
                 </div>
             </div>
+
+            <h4 *ngIf="!(userService.users$ | async)?.length">Please create user first</h4>
         </div>
 
-        <table class="home__tasks" *ngIf="isTaskShowed">
-            <thead>
-                <tr>
-                    <th *ngFor="let header of headers">{{ header }}</th>
-                </tr>
-                <tr></tr>
-            </thead>
+        <div *ngIf="isTaskShowed">
+            <table class="home__tasks" *ngIf="(taskService.tasks$ | async)?.length">
+                <thead>
+                    <tr>
+                        <th *ngFor="let header of headers">{{ header }}</th>
+                    </tr>
+                    <tr></tr>
+                </thead>
+    
+                <tbody>
+                    <tr *ngFor="let task of (taskService.tasks$ | async)" routerLink="edit-task/{{task.id}}">
+                        <td>{{ task.name }}</td>
+                        <td>{{ task.assignedUser?.name ? task.assignedUser?.name : '-' }}</td>
+                        <td>{{ task.creationDate | date:' HH:mm - dd/MM/yy' }}</td>
+                        <td>{{ task.modificationDate | date:'HH:mm - dd/MM/yy' }}</td>
+                        <td>{{ task.state }}</td>
+                        <td><mat-icon>edit</mat-icon></td>
+                    </tr>
+                </tbody>
+            </table>
 
-            <tbody>
-                <tr *ngFor="let task of (taskService.tasks$ | async)" routerLink="edit-task/{{task.id}}">
-                    <td>{{ task.name }}</td>
-                    <td>{{ task.assignedUser?.name ? task.assignedUser?.name : '-' }}</td>
-                    <td>{{ task.creationDate | date:' HH:mm - dd/MM/yy' }}</td>
-                    <td>{{ task.modificationDate | date:'HH:mm - dd/MM/yy' }}</td>
-                    <td>{{ task.state }}</td>
-                    <td><mat-icon>edit</mat-icon></td>
-                </tr>
-            </tbody>
-        </table>
+            <h4 *ngIf="!(taskService.tasks$ | async)?.length">Please create task first</h4>
+        </div>
     </div>
 </div>

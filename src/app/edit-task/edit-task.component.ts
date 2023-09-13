@@ -84,9 +84,7 @@ export class EditTaskComponent implements OnInit {
         assignedUser: assignedUser,
       }
 
-      if(this.task?.assignedUser?.id !== task?.assignedUser?.id) {
-        this.userService.reassignUserTask(task);
-      }
+      this.userService.reassignUserTask(task);
 
       this.taskService.updateTask(task);
       this.snackbarService.openSnackBar('Task updated!', 'Close');

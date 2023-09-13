@@ -6,11 +6,11 @@
             <button mat-raised-button color="primary" routerLink="create-task">Create task</button>
         </div>
 
-        <button mat-raised-button color="primary" (click)="toggleLists()">{{ isTaskShowed ? 'Task' : 'User' }} list view</button>
+        <button mat-raised-button color="primary" (click)="toggleLists()">{{ isTaskListView ? 'Task' : 'User' }} list view</button>
     </div>
 
     <div class="home__lists">
-        <div class="home__users" *ngIf="!isTaskShowed">
+        <div class="home__users" *ngIf="!isTaskListView">
             <div class="home__user" *ngFor="let user of (userService.users$ | async)" routerLink="edit-user/{{user.id}}">
                 <span>{{user.name}}</span>
                 <div>
@@ -22,7 +22,7 @@
             <h4 *ngIf="!(userService.users$ | async)?.length">Please create user first</h4>
         </div>
 
-        <div *ngIf="isTaskShowed">
+        <div *ngIf="isTaskListView">
             <table class="home__tasks" *ngIf="(taskService.tasks$ | async)?.length">
                 <thead>
                     <tr>

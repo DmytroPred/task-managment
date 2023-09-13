@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { ListViewService } from '../common/services/list-view.service';
 import { TaskService } from '../common/services/task.service';
 import { UserService } from '../common/services/user.service';
 import { TASK_HEADERS } from './data/home.data';
@@ -8,13 +10,27 @@ import { TASK_HEADERS } from './data/home.data';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit, OnDestroy {
   headers: string[] = TASK_HEADERS;
-  isTaskShowed = true;
+  isTaskListView: boolean = true;
 
-  constructor(public taskService: TaskService, public userService: UserService) {}
+  constructor(
+    public taskService: TaskService, 
+    public userService: UserService,
+    public listViewService: ListViewService,
+  ) {}
+
+  subscription?: Subscription;
+
+  ngOnInit(): void {
+    this.subscription = this.listViewService.taskListView$.subscribe(state => this.isTaskListView = state);   
+  }
 
   toggleLists() {
-    this.isTaskShowed = !this.isTaskShowed;
+    this.listViewService.taskListView$.next(!this.isTaskListView);
+  }
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
   }
 }

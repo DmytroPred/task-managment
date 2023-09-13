@@ -12,14 +12,23 @@
             <textarea matInput placeholder="Fill task description" formControlName="description"></textarea>
         </mat-form-field> 
 
-        <mat-form-field appearance="outline" *ngIf="users?.length">
+        <mat-form-field appearance="outline">
             <mat-label>Assign user (optional)</mat-label>
             <mat-select formControlName="selectedUser">
                 <mat-option *ngFor="let user of users" [value]="user">
                   {{user.name}}
                 </mat-option>
             </mat-select>
-        </mat-form-field> 
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Change state (optional)</mat-label>
+            <mat-select formControlName="state">
+                <mat-option *ngFor="let state of states" [value]="state" [disabled]="!taskForm.value.selectedUser?.id">
+                  {{state}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
 
         <button mat-raised-button color="primary" type="submit" [disabled]="!taskForm.valid">Submit</button>
     </form>

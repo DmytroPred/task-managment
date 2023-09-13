@@ -1,6 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { STATES } from '../common/data/states.data';
+import { State } from '../common/models/state.type';
 import { Task } from '../common/models/task.interface';
 import { User } from '../common/models/user.interface';
 import { SnackbarService } from '../common/services/snackbar.service';
@@ -18,7 +20,10 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
     name: new FormControl('', Validators.required),
     description: new FormControl('', Validators.required),
     selectedUser: new FormControl({name: '', id: ''}),
+    state: new FormControl('in queue'),
   });
+
+  states = STATES;
 
   subscription?: Subscription;
 
@@ -45,7 +50,7 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
         description: formValue.description,
         creationDate: date,
         modificationDate: date,
-        state: formValue.selectedUser?.id ? 'in progress' : 'in queue',
+        state: formValue.state as State,
 
         assignedUser: {
           name: formValue.selectedUser?.name ?? '',

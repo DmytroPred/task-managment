@@ -30,6 +30,12 @@ $padding-x: 12px;
         &:hover {
             background-color: whitesmoke;
         }
+
+        >:last-child {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
     }
 
     &__tasks {

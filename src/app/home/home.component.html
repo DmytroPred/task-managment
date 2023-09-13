@@ -6,14 +6,17 @@
             <button mat-raised-button color="primary" routerLink="create-task">Create task</button>
         </div>
 
-        <button mat-raised-button color="primary" (click)="toggleLists()">{{ isTaskShowed ? 'Task' : 'User' }} list</button>
+        <button mat-raised-button color="primary" (click)="toggleLists()">{{ isTaskShowed ? 'Task' : 'User' }} list view</button>
     </div>
 
     <div class="home__lists">
         <div class="home__users" *ngIf="!isTaskShowed">
             <div class="home__user" *ngFor="let user of (userService.users$ | async)" routerLink="edit-user/{{user.id}}">
                 <span>{{user.name}}</span>
-                <span *ngIf="user.assignedTask">{{user.assignedTask.name}}</span>
+                <div>
+                    <span *ngIf="user.assignedTask">{{user.assignedTask.name}}</span>
+                    <mat-icon>edit</mat-icon>
+                </div>
             </div>
         </div>
 
@@ -22,15 +25,17 @@
                 <tr>
                     <th *ngFor="let header of headers">{{ header }}</th>
                 </tr>
+                <tr></tr>
             </thead>
 
             <tbody>
                 <tr *ngFor="let task of (taskService.tasks$ | async)" routerLink="edit-task/{{task.id}}">
                     <td>{{ task.name }}</td>
-                    <td>{{ task.assignedUser?.name ?? '-' }}</td>
+                    <td>{{ task.assignedUser?.name ? task.assignedUser?.name : '-' }}</td>
                     <td>{{ task.creationDate | date:' HH:mm - dd/MM/yy' }}</td>
                     <td>{{ task.modificationDate | date:'HH:mm - dd/MM/yy' }}</td>
                     <td>{{ task.state }}</td>
+                    <td><mat-icon>edit</mat-icon></td>
                 </tr>
             </tbody>
         </table>

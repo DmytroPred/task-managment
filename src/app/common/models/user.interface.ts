@@ -1,8 +1,10 @@
-import { Task } from "./task.interface";
+import { AssignedTask } from "./task.interface";
 
-export interface User {
+export interface User extends AssignedUser {
+  assignedTask?: AssignedTask;
+}
+
+export interface AssignedUser {
   id: string;
   name: string;
-  isAssigned?: boolean;
-  assignedTask?: Task;
 }

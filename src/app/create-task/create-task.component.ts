@@ -30,7 +30,7 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscription = this.userService.users$.subscribe(users => {
-      this.users = users.filter(user => !user.isAssigned);
+      this.users = users.filter(user => !user.assignedTask?.id);
     });   
   }
 

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, first } from 'rxjs';
-import { getCircularReplacer } from '../components/functions/get-circular-replacer';
 import { Task } from '../models/task.interface';
 import { User } from '../models/user.interface';
 import { UserService } from './user.service';
@@ -81,6 +80,6 @@ export class TaskService {
   }
 
   updateLocalStorage(tasks: Task[]) {
-    localStorage.setItem('tasks', JSON.stringify(tasks, getCircularReplacer()));
+    localStorage.setItem('tasks', JSON.stringify(tasks));
   }
 }

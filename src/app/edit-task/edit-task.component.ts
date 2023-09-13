@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { first, Subscription } from 'rxjs';
+import { first, switchMap } from 'rxjs';
 import { STATES } from '../common/components/data/states.data';
 import { DeleteDialogComponent } from '../common/components/delete-dialog/delete-dialog.component';
 import { Task } from '../common/models/task.interface';
@@ -38,14 +38,14 @@ export class EditTaskComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.taskService.tasks$.pipe(first()).subscribe(tasks => {
+    this.taskService.tasks$.pipe(switchMap(tasks => {
       const taskId = this.getTaskId();
       this.task = tasks.find(task => task.id === taskId);
-      this.updateTaskFormValues();
-    });
 
-    this.userService.users$.pipe(first()).subscribe(users => {
-      this.users = users.filter(user => !user.isAssigned || user.id === this.task?.assignedUser?.id);
+      return this.userService.users$.pipe(first());
+    })).subscribe(users => {
+      this.users = users.filter(user => !user.assignedTask?.id || user.id === this.task?.assignedUser?.id);
+      this.updateTaskFormValues();
     });
   }
 
@@ -84,13 +84,8 @@ export class EditTaskComponent implements OnInit {
         assignedUser: assignedUser,
       }
 
-      if(this.task?.assignedUser && this.task?.assignedUser?.id !== formValue.selectedUser) {
-        this.userService.unassignUser(this.task?.assignedUser);
-        this.task.assignedUser.id = formValue.selectedUser;
-      }
-
-      if(task?.assignedUser?.id) {
-        this.userService.assignUser(task.assignedUser, task);
+      if(this.task?.assignedUser?.id !== task?.assignedUser?.id) {
+        this.userService.reassignUserTask(task);
       }
 
       this.taskService.updateTask(task);
@@ -99,7 +94,7 @@ export class EditTaskComponent implements OnInit {
   }
 
   updateTaskFormValues(): void {
-    this.taskForm.setValue({
+    this.taskForm.patchValue({
       name: this.task?.name,
       description: this.task?.description,
       selectedUser: this.task?.assignedUser?.id ?? '',

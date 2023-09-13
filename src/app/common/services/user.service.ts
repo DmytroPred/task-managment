@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, first } from 'rxjs';
-import { getCircularReplacer } from '../components/functions/get-circular-replacer';
 import { Task } from '../models/task.interface';
 import { User } from '../models/user.interface';
 
@@ -45,7 +44,6 @@ export class UserService {
     this.users$.pipe(first()).subscribe(users => {
       users.map(item => {
         if(item.id === user.id) {
-          item.isAssigned = true;
           item.assignedTask = task;
         }
       });
@@ -56,12 +54,40 @@ export class UserService {
 
   unassignUser(assignedUser: User) {
     this.users$.pipe(first()).subscribe(users => {
-      users.map(item => {
-        if(item.id === assignedUser.id) {
-          item.isAssigned = false;
-          delete item.assignedTask;
+      users.map(user => {
+        if(user.id === assignedUser.id) {
+          delete user.assignedTask;
         }
       });
+
+      this.users$.next(users);
+    });
+  }
+
+  reassignUserTask(task: Task) {
+    this.users$.pipe(first()).subscribe(users => {
+      if(task.assignedUser?.id) {
+        // unassign task
+        users.forEach((user: User) => {
+          if(user.assignedTask?.id === task.id) {
+            delete user.assignedTask;
+          }
+        });
+
+        // assign task
+        users.forEach(user => {
+          if(user.id === task.assignedUser?.id) {
+            user.assignedTask = {
+              id: task.id,
+              name: task.name,
+              description: task.description,
+              creationDate: task.creationDate,
+              modificationDate: task.modificationDate,
+              state: task.state,
+            }
+          }
+        });
+      }
 
       this.users$.next(users);
     });
@@ -77,6 +103,6 @@ export class UserService {
   }
 
   updateLocalStorage(users: User[]) {
-    localStorage.setItem('users', JSON.stringify(users, getCircularReplacer()));
+    localStorage.setItem('users', JSON.stringify(users));
   }
 }

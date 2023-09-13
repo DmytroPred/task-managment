@@ -21,6 +21,7 @@ import { NavigationTabComponent } from './common/components/navigation-tab/navig
 import { UserListComponent } from './user-list/user-list.component';
 import { TaskListComponent } from './task-list/task-list.component';
 import { AddEditUserComponent } from './add-edit-user/add-edit-user.component';
+import { UserFormComponent } from './common/components/user-form/user-form.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { AddEditUserComponent } from './add-edit-user/add-edit-user.component';
     NavigationTabComponent,
     UserListComponent,
     TaskListComponent,
-    AddEditUserComponent
+    AddEditUserComponent,
+    UserFormComponent
   ],
   imports: [
     BrowserModule,

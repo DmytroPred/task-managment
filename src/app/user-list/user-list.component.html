@@ -9,7 +9,7 @@
         </thead>
 
         <tbody>
-            <tr *ngFor="let user of (userService.users$ | async)" routerLink="/edit-user/{{user.id}}">
+            <tr *ngFor="let user of (userService.users$ | async)" routerLink="/user/{{user.id}}">
                 <td>{{ user.name }}</td>
                 <td>{{ user.assignedTask?.name ? user.assignedTask?.name : '-' }}</td>
                 <td><mat-icon>edit</mat-icon></td>

@@ -20,13 +20,13 @@ const routes: Routes = [
     path: 'create-task', component: CreateTaskComponent,
   },
   {
-    path: 'create-user', component: AddEditUserComponent,
-  },
-  {
     path: 'edit-task/:id', component: EditTaskComponent,
   },
   {
-    path: 'edit-user/:id', component: AddEditUserComponent,
+    path: 'user', component: AddEditUserComponent,
+  },
+  {
+    path: 'user/:id', component: AddEditUserComponent,
   }
 ];
 

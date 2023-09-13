@@ -17,9 +17,6 @@ import { UserService } from '../common/services/user.service';
 export class AddEditUserComponent implements OnInit {
   isAddMode?: boolean;
   user?: User;
-  userForm = new FormGroup({
-    name: new FormControl('', Validators.required),
-  });
 
   constructor(
     public dialog: MatDialog, 
@@ -52,7 +49,6 @@ export class AddEditUserComponent implements OnInit {
   assignUserById(users: User[]): void {
     this.route.params.pipe(first()).subscribe(params => {
       this.user = users.find(user => user.id === params['id']);
-      this.initForm();
     });
   }
 
@@ -67,40 +63,20 @@ export class AddEditUserComponent implements OnInit {
     this.router.navigateByUrl('');
   }
 
-  submitUser(formDirective: FormGroupDirective): void {
-    const formValue = this.userForm.value;
-
-    if(!formValue.name) return;
-
+  saveUser(user: User): void {
     if(this.isAddMode) {
-      const date = new Date();
-
-      const user: User = {
-        id: date.getTime().toString(),
-        name: formValue.name,
-      }
-
-      this.createUser(user, formDirective);
+      this.createUser(user);
       this.snackbarService.openSnackBar('User successfully created!', 'Close');
     }
-    
 
     if(!this.isAddMode) {
-      const user: User = {
-        id: this.user?.id ?? '',
-        name: formValue.name,
-        assignedTask: this.user?.assignedTask
-      }
-
       this.updateUser(user);
       this.snackbarService.openSnackBar('User successfully updated!', 'Close');
     }
   }
 
-  createUser(user: User, formDirective: FormGroupDirective): void {
+  createUser(user: User): void {
     this.userService.createUser(user);
-    this.userForm.reset();
-    formDirective.resetForm();
   }
 
   updateUser(user: User): void {
@@ -109,11 +85,5 @@ export class AddEditUserComponent implements OnInit {
     if(this.user?.assignedTask?.id) {
       this.taskService.updateAssignedUser(this.user?.assignedTask?.id, user);
     }
-  }
-
-  initForm(): void {
-    this.userForm.patchValue({
-      name: this.user?.name,
-    })
   }
 }

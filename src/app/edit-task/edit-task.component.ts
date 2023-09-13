@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { first, Observable, switchMap } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { first, switchMap } from 'rxjs';
 import { STATES } from '../common/data/states.data';
 import { DeleteDialogComponent } from '../common/components/delete-dialog/delete-dialog.component';
 import { Task } from '../common/models/task.interface';
@@ -10,6 +10,7 @@ import { User } from '../common/models/user.interface';
 import { SnackbarService } from '../common/services/snackbar.service';
 import { TaskService } from '../common/services/task.service';
 import { UserService } from '../common/services/user.service';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-edit-task',
@@ -32,7 +33,7 @@ export class EditTaskComponent implements OnInit {
   constructor(
     public dialog: MatDialog, 
     private taskService: TaskService,
-    private router: Router,
+    private location: Location,
     private route: ActivatedRoute,
     private userService: UserService,
     private snackbarService: SnackbarService,
@@ -61,7 +62,7 @@ export class EditTaskComponent implements OnInit {
 
   deleteTask(): void {
     this.taskService.deleteTask(this.task?.id ?? '');
-    this.router.navigateByUrl('');
+    this.location.back();
   }
 
   submitTask(): void {

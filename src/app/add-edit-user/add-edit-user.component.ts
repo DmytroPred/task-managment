@@ -1,7 +1,7 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { first } from 'rxjs';
 import { DeleteDialogComponent } from '../common/components/delete-dialog/delete-dialog.component';
 import { User } from '../common/models/user.interface';
@@ -23,8 +23,8 @@ export class AddEditUserComponent implements OnInit {
     private userService: UserService,
     private taskService: TaskService,
     private snackbarService: SnackbarService,
-    private router: Router,
-    private route: ActivatedRoute,    
+    private route: ActivatedRoute,
+    private location: Location,  
   ) {}
 
   ngOnInit(): void {
@@ -60,7 +60,7 @@ export class AddEditUserComponent implements OnInit {
     }
   
     this.userService.deleteUser(this.user);
-    this.router.navigateByUrl('');
+    this.location.back();
   }
 
   saveUser(user: User): void {

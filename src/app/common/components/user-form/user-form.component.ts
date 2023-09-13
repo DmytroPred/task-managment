@@ -26,10 +26,8 @@ export class UserFormComponent implements OnInit {
     if(this.userForm.invalid) {
       return;
     }
-  
-    const user = this.getUser();
 
-    this.userChangeEvent.emit(user);
+    this.userChangeEvent.emit(this.getUser());
 
     if(this.isAddMode) {
       this.userForm.reset();
@@ -38,25 +36,16 @@ export class UserFormComponent implements OnInit {
   }
 
   getUser(): User {
-    const formValue = this.userForm.value;
+    const id = this.user?.id || Date.now().toString();
+    const name = this.userForm.value.name as string;
+    const assignedTask = this.user?.assignedTask || null;
 
-    if(this.isAddMode) {
-      return {
-        id: Date.now().toString(),
-        name: formValue.name as string,
-      }
-    } else {
-      return {
-        id: this.user?.id ?? '',
-        name: formValue.name as string,
-        assignedTask: this.user?.assignedTask
-      }
-    }
+    return { id, name, assignedTask };
   }
 
   initForm(): void {
     this.userForm.patchValue({
       name: this.user?.name,
-    })
+    });
   }
 }

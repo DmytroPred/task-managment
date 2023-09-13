@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { first } from 'rxjs';
@@ -10,11 +10,12 @@ import { TaskService } from '../common/services/task.service';
 import { UserService } from '../common/services/user.service';
 
 @Component({
-  selector: 'app-edit-user',
-  templateUrl: './edit-user.component.html',
-  styleUrls: ['./edit-user.component.scss']
+  selector: 'app-add-edit-user',
+  templateUrl: './add-edit-user.component.html',
+  styleUrls: ['./add-edit-user.component.scss']
 })
-export class EditUserComponent implements OnInit {
+export class AddEditUserComponent implements OnInit {
+  isAddMode?: boolean;
   user?: User;
   userForm = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -30,7 +31,11 @@ export class EditUserComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.userService.users$.pipe(first()).subscribe(users => this.assignUserById(users));
+    this.isAddMode = !this.route.snapshot.params['id'];
+
+    if(!this.isAddMode) {
+      this.userService.users$.pipe(first()).subscribe(users => this.assignUserById(users));
+    }
   }
 
   openWarningDialog(): void {
@@ -62,10 +67,25 @@ export class EditUserComponent implements OnInit {
     this.router.navigateByUrl('');
   }
 
-  submitUser(): void {
+  submitUser(formDirective: FormGroupDirective): void {
     const formValue = this.userForm.value;
 
-    if(formValue.name) {
+    if(!formValue.name) return;
+
+    if(this.isAddMode) {
+      const date = new Date();
+
+      const user: User = {
+        id: date.getTime().toString(),
+        name: formValue.name,
+      }
+
+      this.createUser(user, formDirective);
+      this.snackbarService.openSnackBar('User successfully created!', 'Close');
+    }
+    
+
+    if(!this.isAddMode) {
       const user: User = {
         id: this.user?.id ?? '',
         name: formValue.name,
@@ -75,6 +95,12 @@ export class EditUserComponent implements OnInit {
       this.updateUser(user);
       this.snackbarService.openSnackBar('User successfully updated!', 'Close');
     }
+  }
+
+  createUser(user: User, formDirective: FormGroupDirective): void {
+    this.userService.createUser(user);
+    this.userForm.reset();
+    formDirective.resetForm();
   }
 
   updateUser(user: User): void {

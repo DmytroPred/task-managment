@@ -11,30 +11,28 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 
-import { CreateUserComponent } from './create-user/create-user.component';
 import { CreateTaskComponent } from './create-task/create-task.component';
 import { ReturnButtonComponent } from './common/components/return-button/return-button.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { EditTaskComponent } from './edit-task/edit-task.component';
-import { EditUserComponent } from './edit-user/edit-user.component';
 import { DeleteDialogComponent } from './common/components/delete-dialog/delete-dialog.component';
 import { NavigationTabComponent } from './common/components/navigation-tab/navigation-tab.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { TaskListComponent } from './task-list/task-list.component';
+import { AddEditUserComponent } from './add-edit-user/add-edit-user.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    CreateUserComponent,
     CreateTaskComponent,
     ReturnButtonComponent,
     EditTaskComponent,
-    EditUserComponent,
     DeleteDialogComponent,
     NavigationTabComponent,
     UserListComponent,
-    TaskListComponent
+    TaskListComponent,
+    AddEditUserComponent
   ],
   imports: [
     BrowserModule,

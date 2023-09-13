@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AddEditUserComponent } from './add-edit-user/add-edit-user.component';
 import { CreateTaskComponent } from './create-task/create-task.component';
-import { CreateUserComponent } from './create-user/create-user.component';
 import { EditTaskComponent } from './edit-task/edit-task.component';
-import { EditUserComponent } from './edit-user/edit-user.component';
 import { TaskListComponent } from './task-list/task-list.component';
 import { UserListComponent } from './user-list/user-list.component';
 
@@ -21,13 +20,13 @@ const routes: Routes = [
     path: 'create-task', component: CreateTaskComponent,
   },
   {
-    path: 'create-user', component: CreateUserComponent,
+    path: 'create-user', component: AddEditUserComponent,
   },
   {
     path: 'edit-task/:id', component: EditTaskComponent,
   },
   {
-    path: 'edit-user/:id', component: EditUserComponent,
+    path: 'edit-user/:id', component: AddEditUserComponent,
   }
 ];
 

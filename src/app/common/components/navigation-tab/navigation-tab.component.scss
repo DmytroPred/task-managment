@@ -1,0 +1,12 @@
+.navigation {
+    display: flex;
+    justify-content: space-between;
+
+    margin-bottom: 24px;
+
+    &__create {
+        :first-child {
+            margin-right: 12px;
+        }
+    }
+}

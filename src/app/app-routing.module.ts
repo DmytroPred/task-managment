@@ -4,11 +4,18 @@ import { CreateTaskComponent } from './create-task/create-task.component';
 import { CreateUserComponent } from './create-user/create-user.component';
 import { EditTaskComponent } from './edit-task/edit-task.component';
 import { EditUserComponent } from './edit-user/edit-user.component';
-import { HomeComponent } from './home/home.component';
+import { TaskListComponent } from './task-list/task-list.component';
+import { UserListComponent } from './user-list/user-list.component';
 
 const routes: Routes = [
   {
-    path: '', component: HomeComponent,
+    path: '', redirectTo: 'task-list', pathMatch: 'full',
+  },
+  {
+    path: 'task-list', component: TaskListComponent,
+  },
+  {
+    path: 'user-list', component: UserListComponent,
   },
   {
     path: 'create-task', component: CreateTaskComponent,

@@ -1,0 +1,21 @@
+<app-navigation-tab></app-navigation-tab>
+<div class="list">
+    <table *ngIf="(userService.users$ | async)?.length">
+        <thead>
+            <tr>
+                <th *ngFor="let header of userTableHeaders">{{ header }}</th>
+            </tr>
+            <tr></tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let user of (userService.users$ | async)" routerLink="/edit-user/{{user.id}}">
+                <td>{{ user.name }}</td>
+                <td>{{ user.assignedTask?.name ? user.assignedTask?.name : '-' }}</td>
+                <td><mat-icon>edit</mat-icon></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h4 *ngIf="!(userService.users$ | async)?.length">Please create user first</h4>
+</div>

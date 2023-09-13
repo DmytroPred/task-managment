@@ -1,4 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
+@import './assets/variables.scss';
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
@@ -18,5 +18,37 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     &__form {
         display: flex;
         flex-direction: column;
+    }
+}
+
+.list {
+    table {
+        border-collapse: collapse;
+        width: 100%;
+
+        th {
+            padding: $list-padding-x;
+            text-align: start;
+        }
+
+        tbody {
+            td {
+                padding: $list-padding-y $list-padding-x;
+
+                &:last-child {
+                    padding-right: 36px;
+                    text-align: end;
+                }
+            }
+
+            tr {
+                cursor: pointer;
+                border-bottom: 2px solid whitesmoke;
+
+                &:hover {
+                    background-color: whitesmoke;
+                }
+            }
+        }
     }
 }

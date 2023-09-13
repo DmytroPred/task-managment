@@ -11,22 +11,31 @@
 
     <div class="home__lists">
         <div class="home__users" *ngIf="!isTaskListView">
-            <div class="home__user" *ngFor="let user of (userService.users$ | async)" routerLink="edit-user/{{user.id}}">
-                <span>{{user.name}}</span>
-                <div>
-                    <span *ngIf="user.assignedTask">{{user.assignedTask.name}}</span>
-                    <mat-icon>edit</mat-icon>
-                </div>
-            </div>
+            <table class="home__table" *ngIf="(userService.users$ | async)?.length">
+                <thead>
+                    <tr>
+                        <th *ngFor="let header of userTableHeaders">{{ header }}</th>
+                    </tr>
+                    <tr></tr>
+                </thead>
+    
+                <tbody>
+                    <tr *ngFor="let user of (userService.users$ | async)" routerLink="edit-user/{{user.id}}">
+                        <td>{{ user.name }}</td>
+                        <td>{{ user.assignedTask?.name ? user.assignedTask?.name : '-' }}</td>
+                        <td><mat-icon>edit</mat-icon></td>
+                    </tr>
+                </tbody>
+            </table>
 
             <h4 *ngIf="!(userService.users$ | async)?.length">Please create user first</h4>
         </div>
 
         <div *ngIf="isTaskListView">
-            <table class="home__tasks" *ngIf="(taskService.tasks$ | async)?.length">
+            <table class="home__table" *ngIf="(taskService.tasks$ | async)?.length">
                 <thead>
                     <tr>
-                        <th *ngFor="let header of headers">{{ header }}</th>
+                        <th *ngFor="let header of taskTableHeaders">{{ header }}</th>
                     </tr>
                     <tr></tr>
                 </thead>

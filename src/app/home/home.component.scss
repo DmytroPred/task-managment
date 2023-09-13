@@ -38,7 +38,7 @@ $padding-x: 12px;
         }
     }
 
-    &__tasks {
+    &__table {
         border-collapse: collapse;
         width: 100%;
 
@@ -50,6 +50,11 @@ $padding-x: 12px;
         tbody {
             td {
                 padding: $padding-y $padding-x;
+
+                &:last-child {
+                    padding-right: 36px;
+                    text-align: end;
+                }
             }
 
             tr {

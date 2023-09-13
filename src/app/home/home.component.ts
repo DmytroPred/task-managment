@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { ListViewService } from '../common/services/list-view.service';
 import { TaskService } from '../common/services/task.service';
 import { UserService } from '../common/services/user.service';
-import { TASK_HEADERS } from './data/home.data';
+import { TASK_TABLE_HEADERS, USER_TABLE_HEADERS } from '../common/data/home-page.data';
 
 @Component({
   selector: 'app-home',
@@ -11,7 +11,9 @@ import { TASK_HEADERS } from './data/home.data';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  headers: string[] = TASK_HEADERS;
+  taskTableHeaders: string[] = TASK_TABLE_HEADERS;
+  userTableHeaders: string[] = USER_TABLE_HEADERS;
+
   isTaskListView: boolean = true;
 
   constructor(

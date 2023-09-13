@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { first, switchMap } from 'rxjs';
-import { STATES } from '../common/components/data/states.data';
+import { STATES } from '../common/data/states.data';
 import { DeleteDialogComponent } from '../common/components/delete-dialog/delete-dialog.component';
 import { Task } from '../common/models/task.interface';
 import { User } from '../common/models/user.interface';

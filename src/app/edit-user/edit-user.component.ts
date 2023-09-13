@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { first } from 'rxjs';
 import { DeleteDialogComponent } from '../common/components/delete-dialog/delete-dialog.component';
 import { User } from '../common/models/user.interface';
@@ -25,15 +25,12 @@ export class EditUserComponent implements OnInit {
     private userService: UserService,
     private taskService: TaskService,
     private snackbarService: SnackbarService,
-    private router: Router,    
+    private router: Router,
+    private route: ActivatedRoute,    
   ) {}
 
   ngOnInit(): void {
-    this.userService.users$.pipe(first()).subscribe(users => {
-      const userId = this.getUserId();
-      this.user = users.find(user => user.id === userId);
-      this.initForm();
-    });
+    this.userService.users$.pipe(first()).subscribe(users => this.assignUserById(users));
   }
 
   openWarningDialog(): void {
@@ -47,8 +44,11 @@ export class EditUserComponent implements OnInit {
     });
   }
 
-  getUserId(): string {
-    return this.router.url.split('/').at(-1) ?? '';
+  assignUserById(users: User[]): void {
+    this.route.params.pipe(first()).subscribe(params => {
+      this.user = users.find(user => user.id === params['id']);
+      this.initForm();
+    });
   }
 
   deleteUser(): void {
@@ -77,7 +77,7 @@ export class EditUserComponent implements OnInit {
     }
   }
 
-  updateUser(user: User) {
+  updateUser(user: User): void {
     this.userService.updateUser(user);
     
     if(this.user?.assignedTask?.id) {

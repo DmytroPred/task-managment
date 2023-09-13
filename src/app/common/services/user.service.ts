@@ -14,7 +14,7 @@ export class UserService {
     this.users$.subscribe(users => this.updateLocalStorage(users));
   }
 
-  initData() {
+  initData(): void {
     const users = localStorage.getItem('users');
 
     if(users) {
@@ -24,14 +24,14 @@ export class UserService {
     }
   }
 
-  createUser(user: User) {
+  createUser(user: User): void {
     this.users$.pipe(first()).subscribe(users => {
       users.unshift(user);
       this.users$.next(users);
     });
   }
 
-  updateUser(user: User) {
+  updateUser(user: User): void {
     this.users$.pipe(first()).subscribe(users => {
       const index = users.findIndex(item => item.id === user.id);
       users[index] = user;
@@ -40,7 +40,7 @@ export class UserService {
     });
   }
 
-  assignUser(user: User, task: Task) {
+  assignUser(user: User, task: Task): void {
     this.users$.pipe(first()).subscribe(users => {
       users.map(item => {
         if(item.id === user.id) {
@@ -52,7 +52,7 @@ export class UserService {
     });
   }
 
-  unassignUser(assignedUser: User) {
+  unassignUser(assignedUser: User): void {
     this.users$.pipe(first()).subscribe(users => {
       users.map(user => {
         if(user.id === assignedUser.id) {
@@ -64,7 +64,7 @@ export class UserService {
     });
   }
 
-  reassignUserTask(task: Task) {
+  reassignUserTask(task: Task): void {
     this.users$.pipe(first()).subscribe(users => {
       if(task.assignedUser?.id) {
         // unassign task
@@ -93,7 +93,7 @@ export class UserService {
     });
   }
 
-  deleteUser(user: User) {
+  deleteUser(user: User): void {
     this.users$.pipe(first()).subscribe(users => {
       const index = users.findIndex(item => item.id === user.id);
       users.splice(index, 1);

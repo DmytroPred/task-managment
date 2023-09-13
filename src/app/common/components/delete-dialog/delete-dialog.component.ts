@@ -10,13 +10,14 @@ export class DeleteDialogComponent implements OnInit {
   deleteSubject: string = 'task';
   constructor(
     private dialogRef: MatDialogRef<DeleteDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) private data: string) {}
+    @Inject(MAT_DIALOG_DATA) private data: string
+  ) {}
 
   ngOnInit(): void {
     this.deleteSubject = this.data;
   }
 
-  confirm() {
+  confirm(): void {
     this.dialogRef.close(true);
   }
 }

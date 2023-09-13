@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
-import { first, switchMap } from 'rxjs';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { first, Observable, switchMap } from 'rxjs';
 import { STATES } from '../common/data/states.data';
 import { DeleteDialogComponent } from '../common/components/delete-dialog/delete-dialog.component';
 import { Task } from '../common/models/task.interface';
@@ -33,14 +33,14 @@ export class EditTaskComponent implements OnInit {
     public dialog: MatDialog, 
     private taskService: TaskService,
     private router: Router,
+    private route: ActivatedRoute,
     private userService: UserService,
     private snackbarService: SnackbarService,
   ) {}
 
   ngOnInit(): void {
     this.taskService.tasks$.pipe(switchMap(tasks => {
-      const taskId = this.getTaskId();
-      this.task = tasks.find(task => task.id === taskId);
+      this.assignTaskById(tasks);
 
       return this.userService.users$.pipe(first());
     })).subscribe(users => {
@@ -49,7 +49,7 @@ export class EditTaskComponent implements OnInit {
     });
   }
 
-  openWarningDialog() {
+  openWarningDialog(): void {
     const dialogRef = this.dialog.open(DeleteDialogComponent, {
       data: 'task'
     });
@@ -59,16 +59,12 @@ export class EditTaskComponent implements OnInit {
     });
   }
 
-  deleteTask() {
+  deleteTask(): void {
     this.taskService.deleteTask(this.task?.id ?? '');
     this.router.navigateByUrl('');
   }
 
-  getTaskId(): string {
-    return this.router.url.split('/').at(-1) ?? '';
-  }
-
-  submitTask() {
+  submitTask(): void {
     const date = new Date();
     const formValue = this.taskForm?.value;
     const assignedUser = this.users?.find(user => user.id === formValue.selectedUser);
@@ -89,6 +85,12 @@ export class EditTaskComponent implements OnInit {
       this.taskService.updateTask(task);
       this.snackbarService.openSnackBar('Task updated!', 'Close');
     }
+  }
+
+  assignTaskById(tasks: Task[]): void {
+    this.route.params.pipe(first()).subscribe(params => {
+      this.task = tasks.find(task => task.id === params['id']);
+    });
   }
 
   updateTaskFormValues(): void {

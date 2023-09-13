@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.subscription = this.listViewService.taskListView$.subscribe(state => this.isTaskListView = state);   
   }
 
-  toggleLists() {
+  toggleLists(): void {
     this.listViewService.taskListView$.next(!this.isTaskListView);
   }
 

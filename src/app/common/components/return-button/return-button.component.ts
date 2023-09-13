@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
 export class ReturnButtonComponent {
   constructor(private location: Location) {}
 
-  return() {
+  return(): void {
     this.location.back();
   }
 }

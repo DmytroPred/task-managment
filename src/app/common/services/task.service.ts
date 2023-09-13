@@ -16,7 +16,7 @@ export class TaskService {
     this.tasks$.subscribe(tasks => this.updateLocalStorage(tasks));
   }
 
-  initData() {
+  initData(): void {
     const tasks = localStorage.getItem('tasks');
 
     if(tasks) {
@@ -26,14 +26,14 @@ export class TaskService {
     }
   }
 
-  createTask(task: Task) {
+  createTask(task: Task): void {
     this.tasks$.pipe(first()).subscribe(tasks => {
       tasks.unshift(task);
       this.tasks$.next(tasks);
     });
   }
 
-  updateTask(task: Task) {
+  updateTask(task: Task): void {
     this.tasks$.pipe(first()).subscribe(tasks => {
       const index = tasks.findIndex(item => item.id === task.id);
       tasks[index] = task;
@@ -41,7 +41,7 @@ export class TaskService {
     });
   }
 
-  updateAssignedUser(taskId: string, user: User) {
+  updateAssignedUser(taskId: string, user: User): void {
     this.tasks$.pipe(first()).subscribe(tasks => {
       const index = tasks.findIndex(item => item.id === taskId);
       tasks[index].assignedUser = user;
@@ -50,7 +50,7 @@ export class TaskService {
     });
   }
 
-  unassignTask(taskId: string) {
+  unassignTask(taskId: string): void {
     this.tasks$.pipe(first()).subscribe(tasks => {
       tasks.forEach(task => {
         if(taskId === task.id) {
@@ -63,7 +63,7 @@ export class TaskService {
     })
   }
 
-  deleteTask(taskId: string) {
+  deleteTask(taskId: string): void {
     if(!taskId) return;
     let deletedTask: Task; 
 
@@ -79,7 +79,7 @@ export class TaskService {
     });
   }
 
-  updateLocalStorage(tasks: Task[]) {
+  updateLocalStorage(tasks: Task[]): void {
     localStorage.setItem('tasks', JSON.stringify(tasks));
   }
 }

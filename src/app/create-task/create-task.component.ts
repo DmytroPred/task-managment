@@ -31,10 +31,10 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscription = this.userService.users$.subscribe(users => {
       this.users = users.filter(user => !user.assignedTask?.id);
-    });   
+    });
   }
 
-  submitTask(formDirective: FormGroupDirective) {
+  submitTask(formDirective: FormGroupDirective): void {
     const date = new Date();
     const formValue = this.taskForm.value;
 
@@ -62,7 +62,7 @@ export class CreateTaskComponent implements OnInit, OnDestroy {
     }
   }
 
-  createTask(task: Task, formDirective: FormGroupDirective) {
+  createTask(task: Task, formDirective: FormGroupDirective): void {
     this.taskService.createTask(task);
     this.taskForm.reset();
     formDirective.resetForm();

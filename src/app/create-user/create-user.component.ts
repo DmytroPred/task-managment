@@ -16,7 +16,7 @@ export class CreateUserComponent {
 
   constructor(private userService: UserService, private snackbarService: SnackbarService) {}
 
-  submitUser(formDirective: FormGroupDirective) {
+  submitUser(formDirective: FormGroupDirective): void {
     const date = new Date();
     const formValue = this.userForm.value;
 
@@ -31,7 +31,7 @@ export class CreateUserComponent {
     }
   }
 
-  createUser(user: User, formDirective: FormGroupDirective) {
+  createUser(user: User, formDirective: FormGroupDirective): void {
     this.userService.createUser(user);
     this.userForm.reset();
     formDirective.resetForm();

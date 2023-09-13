@@ -11,7 +11,8 @@ export class SnackbarService {
     text: string, 
     button: string, 
     horizontalPosition: MatSnackBarHorizontalPosition = 'end', 
-    verticalPosition: MatSnackBarVerticalPosition = 'top')
+    verticalPosition: MatSnackBarVerticalPosition = 'top'
+  ): void
   {
     this.snackBar.open(text, button, {
       horizontalPosition: horizontalPosition,

@@ -14,6 +14,7 @@
         <mat-form-field appearance="outline">
             <mat-label>Assign user (optional)</mat-label>
             <mat-select formControlName="selectedUser">
+                <mat-option class="task__unassign" [value]="" *ngIf="taskForm.value.selectedUser" (click)="unassignUserOption()">Unassign</mat-option>
                 <mat-option *ngFor="let user of users" [value]="user.id">
                   {{user.name}}
                 </mat-option>

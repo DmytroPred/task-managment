@@ -68,6 +68,14 @@ export class TaskFormComponent implements OnInit {
     this.taskForm.reset();
     formDirective.resetForm();
 
+    this.setDefaultState();
+  }
+
+  unassignUserOption(): void {
+    this.setDefaultState();
+  }
+
+  setDefaultState(): void {
     this.taskForm.patchValue({
       state: 'in queue',
     });

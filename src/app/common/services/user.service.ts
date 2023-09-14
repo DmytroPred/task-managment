@@ -54,14 +54,14 @@ export class UserService {
 
   reassignUserTask(task: Task): void {
     this.users$.pipe(first()).subscribe(users => {
-      if(task.assignedUser?.id) {
-        // unassign task
-        users.forEach((user: User) => {
-          if(user.assignedTask?.id === task.id) {
-            delete user.assignedTask;
-          }
-        });
+      // unassign task
+      users.forEach((user: User) => {
+        if(user.assignedTask?.id === task.id) {
+          delete user.assignedTask;
+        }
+      });
 
+      if(task.assignedUser?.id) {
         // assign task
         users.forEach(user => {
           if(user.id === task.assignedUser?.id) {

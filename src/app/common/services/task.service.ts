@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, first } from 'rxjs';
 import { Task } from '../models/task.interface';
 import { User } from '../models/user.interface';
+import { getUnixTime } from '../utilities/get-unix-time';
 import { UserService } from './user.service';
 
 @Injectable({
@@ -56,6 +57,7 @@ export class TaskService {
         id: user.id,
         name: user.name,
       };
+      tasks[index].modificationDate = new Date();
 
       this.tasks$.next(tasks);
     });

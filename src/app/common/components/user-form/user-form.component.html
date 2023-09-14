@@ -4,7 +4,16 @@
         <mat-form-field appearance="outline">
             <mat-label>Username</mat-label>
             <input matInput placeholder="Fill user name" formControlName="name">
-        </mat-form-field> 
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+            <mat-label>Assign task (optional)</mat-label>
+            <mat-select formControlName="selectedTask">
+                <mat-option *ngFor="let task of tasks" [value]="task.id">
+                  {{task.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
 
         <button mat-raised-button color="primary" type="submit" [disabled]="!userForm.valid">{{ isAddMode ? 'Submit' : 'Save' }}</button>
     </form>

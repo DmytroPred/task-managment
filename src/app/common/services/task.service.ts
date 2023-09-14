@@ -43,8 +43,19 @@ export class TaskService {
 
   updateAssignedUser(taskId: string, user: User): void {
     this.tasks$.pipe(first()).subscribe(tasks => {
-      const index = tasks.findIndex(item => item.id === taskId);
-      tasks[index].assignedUser = user;
+      // unassign user from task
+      tasks.forEach((item: Task) => {
+        if(item.assignedUser?.id === user.id) {
+          delete item.assignedUser;
+        }
+      });
+
+      // assign new user to task
+      const index = tasks.findIndex(task => task.id === taskId);
+      tasks[index].assignedUser = {
+        id: user.id,
+        name: user.name,
+      };
 
       this.tasks$.next(tasks);
     });

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { Task } from '../../models/task.interface';
 import { User } from '../../models/user.interface';
 import { getUnixTime } from '../../utilities/get-unix-time';
 
@@ -10,11 +11,13 @@ import { getUnixTime } from '../../utilities/get-unix-time';
 })
 export class UserFormComponent implements OnInit {
   @Input() isAddMode?: boolean;
+  @Input() tasks?: Task[];
   @Input() user?: User;
   @Output() userChangeEvent: EventEmitter<User> = new EventEmitter<User>();
 
   userForm = new FormGroup({
     name: new FormControl('', Validators.required),
+    selectedTask: new FormControl(''),
   });
 
   ngOnInit(): void {
@@ -39,14 +42,19 @@ export class UserFormComponent implements OnInit {
   getUser(): User {
     const id = this.user?.id || getUnixTime();
     const name = this.userForm.value.name as string;
-    const assignedTask = this.user?.assignedTask || null;
+    const assignedTask = this.getTaskById() || this.user?.assignedTask || null;
 
     return { id, name, assignedTask };
+  }
+
+  getTaskById(): Task | undefined {
+    return this.tasks?.find(task => task.id === this.userForm.value.selectedTask);
   }
 
   initForm(): void {
     this.userForm.patchValue({
       name: this.user?.name,
+      selectedTask: this.user?.assignedTask?.id,
     });
   }
 }

@@ -1,9 +1,10 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { first } from 'rxjs';
+import { first, Subscription } from 'rxjs';
 import { DeleteDialogComponent } from '../common/components/delete-dialog/delete-dialog.component';
+import { Task } from '../common/models/task.interface';
 import { User } from '../common/models/user.interface';
 import { SnackbarService } from '../common/services/snackbar.service';
 import { TaskService } from '../common/services/task.service';
@@ -14,9 +15,12 @@ import { UserService } from '../common/services/user.service';
   templateUrl: './add-edit-user.component.html',
   styleUrls: ['./add-edit-user.component.scss']
 })
-export class AddEditUserComponent implements OnInit {
+export class AddEditUserComponent implements OnInit, OnDestroy {
   isAddMode?: boolean;
   user?: User;
+  tasks?: Task[];
+
+  subscription?: Subscription;
 
   constructor(
     public dialog: MatDialog, 
@@ -30,8 +34,12 @@ export class AddEditUserComponent implements OnInit {
   ngOnInit(): void {
     this.isAddMode = !this.route.snapshot.params['id'];
 
+    if(this.isAddMode) {
+      this.getUnassignedTaskList();
+    }
+
     if(!this.isAddMode) {
-      this.userService.users$.pipe(first()).subscribe(users => this.assignUserById(users));
+      this.userService.users$.pipe(first()).subscribe(users => this.getUserById(users));
     }
   }
 
@@ -46,9 +54,17 @@ export class AddEditUserComponent implements OnInit {
     });
   }
 
-  assignUserById(users: User[]): void {
+  getUserById(users: User[]): void {
     this.route.params.pipe(first()).subscribe(params => {
       this.user = users.find(user => user.id === params['id']);
+
+      this.getUnassignedTaskList();
+    });
+  }
+
+  getUnassignedTaskList(): void {
+    this.subscription = this.taskService.tasks$.subscribe(tasks => {
+      this.tasks = tasks.filter(task => !task.assignedUser || task.id === this.user?.assignedTask?.id);
     });
   }
 
@@ -66,13 +82,17 @@ export class AddEditUserComponent implements OnInit {
   saveUser(user: User): void {
     if(this.isAddMode) {
       this.createUser(user);
-      this.snackbarService.openSnackBar('User successfully created!', 'Close');
     }
 
     if(!this.isAddMode) {
       this.updateUser(user);
-      this.snackbarService.openSnackBar('User successfully updated!', 'Close');
     }
+
+    if(user.assignedTask?.id) {
+      this.taskService.updateAssignedUser(user.assignedTask?.id, user);
+    }
+
+    this.snackbarService.openSnackBar(`User successfully ${ this.isAddMode ? 'created' : 'updated'}!`, 'Close');
   }
 
   createUser(user: User): void {
@@ -81,9 +101,12 @@ export class AddEditUserComponent implements OnInit {
 
   updateUser(user: User): void {
     this.userService.updateUser(user);
-    
-    if(this.user?.assignedTask?.id) {
-      this.taskService.updateAssignedUser(this.user?.assignedTask?.id, user);
+    if(this.user) {
+      this.user.assignedTask = user.assignedTask;
     }
+  }
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
   }
 }

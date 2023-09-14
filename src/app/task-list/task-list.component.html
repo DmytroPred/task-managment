@@ -9,7 +9,7 @@
         </thead>
     
         <tbody>
-            <tr *ngFor="let task of (taskService.tasks$ | async)" routerLink="/edit-task/{{task.id}}">
+            <tr *ngFor="let task of (taskService.tasks$ | async)" routerLink="/task/{{task.id}}">
                 <td>{{ task.name }}</td>
                 <td>{{ task.assignedUser?.name ? task.assignedUser?.name : '-' }}</td>
                 <td>{{ task.creationDate | date:' HH:mm - dd/MM/yy' }}</td>

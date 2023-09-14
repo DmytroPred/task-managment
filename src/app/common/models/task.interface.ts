@@ -9,5 +9,5 @@ export interface Task {
   modificationDate: Date;
   state: State;
 
-  assignedUser?: User;
+  assignedUser?: User | null;
 }

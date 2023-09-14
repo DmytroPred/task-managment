@@ -1,12 +1,6 @@
-<div class="buttons">
-    <app-return-button></app-return-button>
-    <button mat-fab color="warn" aria-label="Delete task" (click)="openWarningDialog()">
-        <mat-icon>delete</mat-icon>
-    </button>
-</div>
 <div class="task default-form">
-    <h4>Edit task</h4>
-    <form *ngIf="taskForm" class="task__form" (ngSubmit)="submitTask()" [formGroup]="taskForm">
+    <h4>{{ isAddMode ? 'Create' : 'Edit' }} task</h4>
+    <form *ngIf="taskForm" class="task__form" (ngSubmit)="submitTask(formDirective)" [formGroup]="taskForm" #formDirective="ngForm">
         <mat-form-field appearance="outline">
             <mat-label>Name</mat-label>
             <input matInput placeholder="Fill task name" formControlName="name">
@@ -35,6 +29,6 @@
             </mat-select>
         </mat-form-field> 
     
-        <button mat-raised-button color="primary" type="submit" [disabled]="!taskForm.valid">Save</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!taskForm.valid">{{ isAddMode ? 'Submit' : 'Save' }}</button>
     </form>
 </div>

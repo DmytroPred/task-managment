@@ -40,18 +40,6 @@ export class UserService {
     });
   }
 
-  assignUser(user: User, task: Task): void {
-    this.users$.pipe(first()).subscribe(users => {
-      users.map(item => {
-        if(item.id === user.id) {
-          item.assignedTask = task;
-        }
-      });
-
-      this.users$.next(users);
-    });
-  }
-
   unassignUser(assignedUser: User): void {
     this.users$.pipe(first()).subscribe(users => {
       users.map(user => {

@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, first } from 'rxjs';
 import { Task } from '../models/task.interface';
 import { User } from '../models/user.interface';
-import { getUnixTime } from '../utilities/get-unix-time';
 import { UserService } from './user.service';
 
 @Injectable({
